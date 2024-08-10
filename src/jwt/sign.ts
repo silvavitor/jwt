@@ -6,16 +6,16 @@ type SignOptions = {
   secret: string;
 };
 
-export function sign(options: SignOptions) {
+export function sign({ data, exp, secret }: SignOptions) {
   const header = {
     alg: "HS256",
     typ: "JWT",
   };
 
   const payload = {
-    ...options.data,
+    ...data,
     iat: Date.now(),
-    exp: options.exp,
+    exp: exp,
   };
 
   const base64EncodedHeader = Buffer.from(JSON.stringify(header)).toString(
@@ -27,7 +27,7 @@ export function sign(options: SignOptions) {
   );
 
   const signature = generateSignature({
-    secret: options.secret,
+    secret,
     header: base64EncodedHeader,
     payload: base64EncodedPayload,
   });
