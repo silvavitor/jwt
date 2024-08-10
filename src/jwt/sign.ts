@@ -1,4 +1,4 @@
-import { createHmac } from "node:crypto";
+import { generateSignature } from "./generateSignature";
 
 type SignOptions = {
   data: Record<string, any>;
@@ -26,11 +26,11 @@ export function sign(options: SignOptions) {
     "base64url"
   );
 
-  const hmac = createHmac("sha256", options.secret);
-
-  const signature = hmac
-    .update(`${base64EncodedHeader}.${base64EncodedPayload}`)
-    .digest("base64url");
+  const signature = generateSignature({
+    secret: options.secret,
+    header: base64EncodedHeader,
+    payload: base64EncodedPayload,
+  });
 
   return `${base64EncodedHeader}.${base64EncodedPayload}.${signature}`;
 }
