@@ -6,6 +6,10 @@ type VerifyOptions = {
 };
 
 export function verify({ token, secret }: VerifyOptions) {
+  if (!secret) {
+    throw new Error("Secret is required to verify");
+  }
+
   const splitedToken = token.split(".");
   if (splitedToken.length !== 3) {
     throw new Error("Invalid JWT token");

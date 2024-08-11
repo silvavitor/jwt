@@ -7,6 +7,9 @@ type SignOptions = {
 };
 
 export function sign({ data, exp, secret }: SignOptions) {
+  if (!secret) {
+    throw new Error("Secret is required for signing");
+  }
   const header = {
     alg: "HS256",
     typ: "JWT",
